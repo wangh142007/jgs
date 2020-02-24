@@ -1,0 +1,14 @@
+com\wh\pojo\ItemsParam.class
+com\wh\pojo\Users.class
+com\wh\pojo\bo\UserBO.class
+com\wh\pojo\OrderItems.class
+com\wh\pojo\ItemsComments.class
+com\wh\pojo\Carousel.class
+com\wh\pojo\ItemsSpec.class
+com\wh\pojo\Orders.class
+com\wh\pojo\UserAddress.class
+com\wh\pojo\OrderStatus.class
+com\wh\pojo\ItemsImg.class
+com\wh\pojo\Items.class
+com\wh\pojo\Category.class
+com\wh\pojo\Stu.class

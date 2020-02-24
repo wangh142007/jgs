@@ -1,0 +1,11 @@
+com\wh\Application.class
+com\wh\controller\HelloController.class
+com\wh\aspect\ServiceLogAspect.class
+com\wh\config\CorsConfig.class
+com\wh\controller\PassportController.class
+com\wh\controller\IndexController.class
+com\wh\controller\ItemsController.class
+com\wh\controller\AddressController.class
+com\wh\controller\BaseController.class
+com\wh\config\Swagger2.class
+com\wh\controller\ShopcatController.class
