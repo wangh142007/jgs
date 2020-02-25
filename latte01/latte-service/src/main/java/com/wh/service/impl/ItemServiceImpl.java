@@ -3,6 +3,7 @@ package com.wh.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wh.enmus.CommentLevel;
+import com.wh.enmus.YesOrNo;
 import com.wh.mapper.*;
 import com.wh.pojo.*;
 import com.wh.pojo.vo.CommentLevelCountsVO;
@@ -166,4 +167,31 @@ public class ItemServiceImpl implements ItemService {
         Collections.addAll(specIdsList, ids);
         return itemsMapperCustom.queryItemsBySpecIds(specIdsList);
     }
+
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    @Override
+    public ItemsSpec queryItemsSpecById(String ItemsId) {
+        return itemsSpecMapper.selectByPrimaryKey(ItemsId);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    @Override
+    public String queryItemMainImgById(String itemId) {
+        ItemsImg itemsImg = new ItemsImg();
+        itemsImg.setIsMain(YesOrNo.YES.type);
+        itemsImg.setItemId(itemId);
+        ItemsImg result = itemsImgMapper.selectOne(itemsImg);
+        return result != null ? result.getUrl() : "";
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override
+    public void decreaseItemSpecStock(String specId, int buyCounts) {
+        int result = itemsMapperCustom.decreaseItemSpecStock(specId, buyCounts);
+        if (result != 1) {
+            throw new RuntimeException("创建订单失败，库存不足");
+        }
+    }
+
+
 }

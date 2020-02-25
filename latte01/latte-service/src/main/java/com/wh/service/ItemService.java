@@ -54,6 +54,7 @@ public interface ItemService {
      * 根据商品id查询商品的评价等级数量
      *
      * @param itemId
+     * @return
      */
     CommentLevelCountsVO queryCommentCounts(String itemId);
 
@@ -102,4 +103,29 @@ public interface ItemService {
      * @return
      */
     List<ShopcartVO> queryItemsBySpecIds(String specIds);
+
+    /**
+     * 根据商品规格id获取规格对象
+     *
+     * @param ItemsId
+     * @return
+     */
+    ItemsSpec queryItemsSpecById(String ItemsId);
+
+    /**
+     * 根据商品id获取商品图片的url
+     *
+     * @param itemId
+     * @return
+     */
+    String queryItemMainImgById(String itemId);
+
+    /**
+     * 扣除库存
+     *
+     * @param specId
+     * @param buyCounts
+     */
+    void decreaseItemSpecStock(String specId, int buyCounts);
+
 }

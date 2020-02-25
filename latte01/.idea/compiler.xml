@@ -8,8 +8,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="latte-common" />
         <module name="latte-mapper" />
-        <module name="latte-service" />
         <module name="latte-api" />
+        <module name="latte-service" />
         <module name="latte-pojo" />
       </profile>
     </annotationProcessing>
