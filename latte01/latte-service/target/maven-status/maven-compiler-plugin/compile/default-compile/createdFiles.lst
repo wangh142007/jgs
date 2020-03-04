@@ -4,5 +4,7 @@ com\wh\service\impl\UserServiceImpl.class
 com\wh\service\impl\CarouseServiceImpl.class
 com\wh\service\impl\CategoryServiceImpl.class
 com\wh\service\impl\AddressServiceImpl.class
+com\wh\service\impl\OrderServiceImpl.class
+com\wh\service\OrderService.class
 com\wh\service\AddressService.class
 com\wh\service\CategoryService.class
