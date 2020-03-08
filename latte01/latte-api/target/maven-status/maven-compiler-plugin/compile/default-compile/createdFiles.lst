@@ -1,5 +1,6 @@
 com\wh\Application.class
 com\wh\controller\HelloController.class
+com\wh\config\WebMvcConfig.class
 com\wh\aspect\ServiceLogAspect.class
 com\wh\config\CorsConfig.class
 com\wh\controller\OrdersController.class
@@ -9,4 +10,5 @@ com\wh\controller\ItemsController.class
 com\wh\controller\AddressController.class
 com\wh\controller\BaseController.class
 com\wh\config\Swagger2.class
+com\wh\config\OrderJob.class
 com\wh\controller\ShopcatController.class

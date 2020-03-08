@@ -33,3 +33,4 @@ com\wh\core\CommonConstants.class
 com\wh\org\n3r\idworker\Test.class
 com\wh\org\n3r\idworker\utils\HttpReq.class
 com\wh\org\n3r\idworker\utils\Ip.class
+com\wh\utils\DateUtil.class
