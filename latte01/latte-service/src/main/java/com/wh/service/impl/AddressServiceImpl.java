@@ -114,7 +114,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     @Override
-    public UserAddress queryUserUserAddress(String userId, String addressId) {
+    public UserAddress queryUserAddress(String userId, String addressId) {
         UserAddress userAddress = new UserAddress();
         userAddress.setId(addressId);
         userAddress.setUserId(userId);
