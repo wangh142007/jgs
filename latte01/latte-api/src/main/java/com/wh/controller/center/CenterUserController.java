@@ -3,8 +3,10 @@ package com.wh.controller.center;
 import com.wh.controller.BaseController;
 import com.wh.pojo.Users;
 import com.wh.pojo.bo.center.CenterUserBO;
+import com.wh.resource.FileUpload;
 import com.wh.service.center.CenterUserService;
 import com.wh.utils.CookieUtils;
+import com.wh.utils.DateUtil;
 import com.wh.utils.IMOOCJSONResult;
 import com.wh.utils.JsonUtils;
 import io.swagger.annotations.Api;
@@ -42,6 +44,7 @@ import java.util.Map;
 public class CenterUserController extends BaseController {
 
     private CenterUserService centerUserService;
+    private FileUpload fileUpload;
 
 
     @ApiOperation(value = "用户修改头像", notes = "用户修改头像", httpMethod = "POST")
@@ -55,7 +58,8 @@ public class CenterUserController extends BaseController {
             HttpServletResponse response
     ) {
         //定义头像保存的地址
-        String fileSpace = IMAGE_USER_FACE_LOCATION;
+//        String fileSpace = IMAGE_USER_FACE_LOCATION;
+        String fileSpace = fileUpload.getImageUserFaceLocation();
         //在路径上为每一个用户增加一个userId，用于区分不同用户上传
         String uploadPathPrefix = File.separator + userId;
         //文件开始上传
@@ -69,11 +73,20 @@ public class CenterUserController extends BaseController {
                     String[] fileNameArr = fileName.split("\\.");
                     //获取文件的后缀名
                     String suffix = fileNameArr[fileNameArr.length - 1];
+
+                    if (!suffix.equalsIgnoreCase("png") &&
+                            !suffix.equalsIgnoreCase("jpg") &&
+                            !suffix.equalsIgnoreCase("jpeg") ) {
+                        return IMOOCJSONResult.errorMsg("图片格式不正确！");
+                    }
                     //文件名称重组 覆盖式上传，增量式：额外拼接当前时间
                     String newFileName = "face-" + userId + "." + suffix;
 
                     //上传头像的位置
                     String finalFacePath = fileSpace + uploadPathPrefix + File.separator + newFileName;
+                    //用于提供给web服务访问的地址
+                    uploadPathPrefix += ("/" + newFileName);
+
                     File outFile = new File(finalFacePath);
                     if (outFile.getParentFile() != null) {
                         //创建文件夹
@@ -99,8 +112,15 @@ public class CenterUserController extends BaseController {
         } else {
             return IMOOCJSONResult.errorMsg("文件不能为空");
         }
+        //获取服务器地址
+        String imageServerUrl = fileUpload.getImageServerUrl();
+        //由于浏览器可能存在缓存情况，所以在这里需要加上时间戳，以便及时更新
+        String finalUserFaceUrl = imageServerUrl + uploadPathPrefix+"?t=" + DateUtil.getCurrentDateString(DateUtil.DATE_PATTERN);
 
-
+        Users user = centerUserService.updateUserFace(userId, finalUserFaceUrl);
+        user = setNullProperty(user);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
+        //todo: 后续修改，增加令牌token，会整合redis，分布式会话
         return IMOOCJSONResult.ok();
     }
 
