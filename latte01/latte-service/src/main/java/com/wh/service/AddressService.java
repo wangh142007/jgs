@@ -57,6 +57,6 @@ public interface AddressService {
      * @param addressId
      * @return
      */
-    UserAddress queryUserUserAddress(String userId, String addressId);
+    UserAddress queryUserAddress(String userId, String addressId);
 
 }
