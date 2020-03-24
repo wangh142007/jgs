@@ -2,6 +2,7 @@ package com.wh.service;
 
 import com.wh.pojo.Carousel;
 import com.wh.pojo.OrderStatus;
+import com.wh.pojo.bo.ShopcartBO;
 import com.wh.pojo.bo.SubmitOrderBO;
 import com.wh.pojo.vo.OrderVO;
 
@@ -21,7 +22,7 @@ public interface OrderService {
      * @param submitOrderBO
      * @return
      */
-    OrderVO createOrder(SubmitOrderBO submitOrderBO);
+    OrderVO createOrder(List<ShopcartBO> shopcartList, SubmitOrderBO submitOrderBO);
 
     /**
      * 修改订单状态
