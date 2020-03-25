@@ -180,8 +180,6 @@ public class PassportController extends BaseController{
             // redis不为空，cookie不为空，合并cookie和redis中购物车的商品数据（同一商品则覆盖redis）
             if (StringUtils.isNotBlank(shopcartStrCookie)) {
 
-
-
                 List<ShopcartBO> shopcartListRedis = JsonUtils.jsonToList(shopcartJsonRedis, ShopcartBO.class);
                 List<ShopcartBO> shopcartListCookie = JsonUtils.jsonToList(shopcartStrCookie, ShopcartBO.class);
 
