@@ -3,6 +3,7 @@ package com.wh.controller.center;
 import com.wh.controller.BaseController;
 import com.wh.pojo.Users;
 import com.wh.pojo.bo.center.CenterUserBO;
+import com.wh.pojo.vo.UsersVO;
 import com.wh.resource.FileUpload;
 import com.wh.service.center.CenterUserService;
 import com.wh.utils.CookieUtils;
@@ -76,7 +77,7 @@ public class CenterUserController extends BaseController {
 
                     if (!suffix.equalsIgnoreCase("png") &&
                             !suffix.equalsIgnoreCase("jpg") &&
-                            !suffix.equalsIgnoreCase("jpeg") ) {
+                            !suffix.equalsIgnoreCase("jpeg")) {
                         return IMOOCJSONResult.errorMsg("图片格式不正确！");
                     }
                     //文件名称重组 覆盖式上传，增量式：额外拼接当前时间
@@ -115,12 +116,13 @@ public class CenterUserController extends BaseController {
         //获取服务器地址
         String imageServerUrl = fileUpload.getImageServerUrl();
         //由于浏览器可能存在缓存情况，所以在这里需要加上时间戳，以便及时更新
-        String finalUserFaceUrl = imageServerUrl + uploadPathPrefix+"?t=" + DateUtil.getCurrentDateString(DateUtil.DATE_PATTERN);
+        String finalUserFaceUrl = imageServerUrl + uploadPathPrefix + "?t=" + DateUtil.getCurrentDateString(DateUtil.DATE_PATTERN);
 
         Users user = centerUserService.updateUserFace(userId, finalUserFaceUrl);
-        user = setNullProperty(user);
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
-        //todo: 后续修改，增加令牌token，会整合redis，分布式会话
+//        user = setNullProperty(user);
+        UsersVO usersVO = conventUsersVO(user);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);
+
         return IMOOCJSONResult.ok();
     }
 
@@ -140,9 +142,11 @@ public class CenterUserController extends BaseController {
             return IMOOCJSONResult.errorMap(errorMap);
         }
         Users user = centerUserService.updateUserInfo(centerUserBO, userId);
-        user = setNullProperty(user);
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
-        //todo: 后续修改，增加令牌token，会整合redis，分布式会话
+//        user = setNullProperty(user);
+
+        UsersVO usersVO = conventUsersVO(user);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);
+
         return IMOOCJSONResult.ok();
     }
 

@@ -1,9 +1,11 @@
 package com.wh.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.wh.pojo.Users;
 import com.wh.pojo.bo.ShopcartBO;
 import com.wh.pojo.bo.UserBO;
+import com.wh.pojo.vo.UsersVO;
 import com.wh.service.UserService;
 import com.wh.utils.CookieUtils;
 import com.wh.utils.IMOOCJSONResult;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @program: latte
@@ -33,7 +36,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/passport")
 @Api(value = "注册登录", tags = {"用于注册登录的接口"})
-public class PassportController extends BaseController{
+public class PassportController extends BaseController {
 
     private UserService userService;
     private RedisOperator redisOperator;
@@ -57,7 +60,7 @@ public class PassportController extends BaseController{
     @ApiOperation(value = "用户注册", notes = "用户注册", httpMethod = "POST")
     @PostMapping("/regist")
     public IMOOCJSONResult regist(@RequestBody UserBO userBO
-            ,  HttpServletRequest request
+            , HttpServletRequest request
             , HttpServletResponse response) {
         String username = userBO.getUsername();
         String password = userBO.getPassword();
@@ -84,14 +87,18 @@ public class PassportController extends BaseController{
         }
         //5.实现注册
         Users user = userService.createUser(userBO);
-        user = setNullProperty(user);
 
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
-        // TODO 生成用户token，存入redis会话
+        //实现用户redis会话
+        UsersVO usersVO = conventUsersVO(user);
+
+        CookieUtils.setCookie(request, response, "user",
+                JsonUtils.objectToJson(usersVO), true);
+
         // 同步购物车数据
         synchShopcartData(user.getId(), request, response);
         return IMOOCJSONResult.ok();
     }
+
 
     @ApiOperation(value = "用户登录", notes = "用户登录", httpMethod = "POST")
     @PostMapping("/login")
@@ -112,12 +119,15 @@ public class PassportController extends BaseController{
         if (user == null) {
             return IMOOCJSONResult.errorMsg("用户名或密码不正确");
         }
-        user = setNullProperty(user);
+//        user = setNullProperty(user);
 
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
+        //实现用户redis会话
+        UsersVO usersVO = conventUsersVO(user);
+
+        CookieUtils.setCookie(request, response, "user",
+                JsonUtils.objectToJson(usersVO), true);
 
 
-        // TODO 生成用户token，存入redis会话
         // 同步购物车数据
         synchShopcartData(user.getId(), request, response);
         return IMOOCJSONResult.ok(user);
@@ -142,7 +152,9 @@ public class PassportController extends BaseController{
         // 清除用户的相关信息的cookie
         CookieUtils.deleteCookie(request, response, "user");
 
-        // TODO 用户退出登录，需要清空购物车
+        // 用户退出登录，清除redis中user的会话信息
+        redisOperator.del(REDIS_USER_TOKEN + ":" + userId);
+
         // 分布式会话中需要清除用户数据
         CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART);
         return IMOOCJSONResult.ok();

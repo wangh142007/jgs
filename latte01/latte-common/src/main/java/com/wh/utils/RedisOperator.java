@@ -6,6 +6,7 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.StringRedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
  * @create 2020/3/24 0024
  * @since 1.0.0
  */
+@Component
 public class RedisOperator {
 
     @Autowired

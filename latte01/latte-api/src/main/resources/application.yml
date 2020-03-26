@@ -35,7 +35,11 @@ spring:
     database: 0
     host: 39.106.121.113
     port: 6379
-    password: wanghao
+
+
+  session:
+    store-type: redis
+
 ############################################################
 #
 # mybatis 配置
