@@ -6,11 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="latte-sso" />
+        <module name="latte-pojo" />
+        <module name="latte-service" />
+        <module name="latte-api" />
         <module name="latte-mapper" />
         <module name="latte-common" />
-        <module name="latte-api" />
-        <module name="latte-service" />
-        <module name="latte-pojo" />
       </profile>
     </annotationProcessing>
   </component>
@@ -21,6 +22,7 @@
       <module name="latte-mapper" options="-parameters" />
       <module name="latte-pojo" options="-parameters" />
       <module name="latte-service" options="-parameters" />
+      <module name="latte-sso" options="-parameters" />
     </option>
   </component>
 </project>
